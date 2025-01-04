@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room</title>
+</head>
+<body>
+    <div id="message-received"></div>
+    <div id="message-sent">
+        <input type="text" name="message" id="message-field" value="">
+        <button id="send-button">Send</button>
+    </div>
+
+
+    <script>
+        myConn = new WebSocket("ws://localhost:8000/ws/room/room1")
+        msg_recived = document.getElementById("message-received")
+        
+
+        button = document.getElementById("send-button")
+        button.addEventListener("click", (event)=>{
+            console.log("button clicked")
+            const msg_value = document.getElementById("message-field").value
+            console.log(msg_value)
+
+            const msg = {
+                "message": msg_value,
+                "date": Date.now(),
+            }
+            myConn.send(JSON.stringify(msg))
+            console.log("msg sent")
+            console.log(msg)
+        })
+
+        
+
+        myConn.addEventListener("message", (event)=>{
+            console.log("recived msg")
+            const data = JSON.parse(event.data)
+            console.log(data["message"])
+            msg_recived.innerHTML = `<div>${msg_recived.innerHTML} <p> ${data["message"]}</p></div>`
+        })
+
+    </script>
+</body>
+</html>
