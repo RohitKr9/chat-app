@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .forms import SignUpForm
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate
+from django.urls import reverse
+import json
 
 # Create your views here.
 def signup(request):
@@ -9,12 +12,29 @@ def signup(request):
         form = SignUpForm(request.POST)
 
         if form.is_valid():
-            return HttpResponse("Your data have been saved", status = 200)
+            print(request.POST["email"])
+            print(request.POST["first_name"])
+            print(request.POST["last_name"])
+            print(request.POST["password"])
+            form.save()
+            return HttpResponseRedirect(reverse('chat_home'))
         
     else:
             form = SignUpForm()
 
     return render(request, "signup.html", {"form": form})
     
+
 def login(request):
-    pass
+    
+    if request.method == 'POST':
+        data = request.POST
+        print(data["email"])
+        print(data["password"])
+        user = authenticate(username = data["email"], password = data["password"])
+        print(user)
+
+        if user is not None:
+            return HttpResponseRedirect(reverse('chat_home'))
+
+    return render(request, "login.html")

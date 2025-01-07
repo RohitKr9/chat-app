@@ -21,7 +21,8 @@ from accounts.views import signup, login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('chat-app/', chatApp),
-    path('chat-app/<str:room_name>/', chatAppRoom),
-    path('account/signup/', signup),
+    path('chat-app/', chatApp, name='chat_home'),
+    path('chat-app/<str:room_name>/', chatAppRoom, name='chatroom'),
+    path('account/signup/', signup, name = 'signup'),
+    path('account/login/', login, name = 'login')
 ]
