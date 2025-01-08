@@ -3,7 +3,6 @@ from .forms import SignUpForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.urls import reverse
-import json
 
 # Create your views here.
 def signup(request):

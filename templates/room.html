@@ -14,8 +14,11 @@
 
 
     <script>
-        myConn = new WebSocket("ws://localhost:8000/ws/room/room1")
-        msg_recived = document.getElementById("message-received")
+        const currUrl = window.location.pathname;
+        const userid = currUrl.split('/').at(-2);
+
+        const myConn = new WebSocket(`ws://localhost:8000/ws/room/${userid}/`)
+        const msg_recived = document.getElementById("message-received")
         
 
         button = document.getElementById("send-button")

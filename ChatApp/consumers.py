@@ -4,7 +4,11 @@ import json
 class MyConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        self.user_id_2 = self.scope["url_route"]["kwargs"]["userid"]
+        self.user_id_1 = self.scope['user']['id']
+
+        self.room_name = f"{min(self.user_id_1,self.user_id_2)}-{max(self.user_id_1, self.user_id_2)}"
+
         self.group_name = self.room_name
 
         await self.channel_layer.group_add(
@@ -16,7 +20,7 @@ class MyConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         msg = text_data_json["message"]
-        print(f"msg recivev {msg}")
+        print(f"msg recived {msg}")
 
         await self.channel_layer.group_send(
             self.group_name,
