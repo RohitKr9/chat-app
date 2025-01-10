@@ -17,7 +17,7 @@
         const currUrl = window.location.pathname;
         const userid = currUrl.split('/').at(-2);
 
-        const myConn = new WebSocket(`ws://localhost:8000/ws/room/${userid}/`)
+        const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
         const msg_recived = document.getElementById("message-received")
         
 

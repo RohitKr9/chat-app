@@ -5,7 +5,13 @@ class MyConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.user_id_2 = self.scope["url_route"]["kwargs"]["userid"]
-        self.user_id_1 = self.scope['user']['id']
+        user = self.scope['user']
+        session = self.scope.get("session")
+        print(f"User in WebSocket: {user}, is_authenticated: {user.is_authenticated}")
+        print(f"Session: {session}")
+
+        self.user_id_1 = user.id
+        self.user_id_2 = int(self.user_id_2)
 
         self.room_name = f"{min(self.user_id_1,self.user_id_2)}-{max(self.user_id_1, self.user_id_2)}"
 

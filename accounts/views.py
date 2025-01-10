@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from .forms import SignUpForm
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from django.contrib.auth import get_user
 
 # Create your views here.
 def signup(request):
@@ -24,16 +25,18 @@ def signup(request):
     return render(request, "signup.html", {"form": form})
     
 
-def login(request):
+def loginUser(request):
     
     if request.method == 'POST':
         data = request.POST
         print(data["email"])
         print(data["password"])
         user = authenticate(username = data["email"], password = data["password"])
-        print(user)
-
+        
+        
         if user is not None:
+            login(request, user)
+            print(f"User in not None inside loginuser view: {user}, is_authenticated: {user.is_authenticated}")
             return HttpResponseRedirect(reverse('chat_home'))
 
     return render(request, "login.html")
