@@ -1,45 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        *{
-            padding:0;
+         body {
             margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
         }
-        #container{
+        .container{
             display: flex;
-            justify-content: center; 
             align-items: center;
             
-        }
-        .message-received{
-            margin : 10px;
-            border: 2px solid black;
-            border-radius: 10px;
-            width: 42rem;
-            height: 30rem;
+            flex-direction: column;
+            margin: 10px auto 10px auto;
+            /* width: 50vw;
+            border: 3px solid black;
+            border-radius: 20px; */
+            height: 96vh;
         }
 
-        .msg{
-            padding: 10px;
+        .message-received{
+            margin: 20px 10px 10px 10px;
+            padding : 10px;
+            width: 45vw;
+            height: 80vh;
+            /* border: 3px solid black;
+            border-radius: 20px; */
+        }
+
+        #left-msg{
+            text-align: left;
+        }
+
+        #right-msg{
+            text-align: right;
         }
         
-        #message-sent{
+        .message-sent{
+            position: sticky;
             display: flex;
             justify-content: center;
-            align-items: center;
-            position: fixed;
-            bottom: 0;
-            padding: 30px;
-            width : 70%;
+            margin: 20px;
+            width: 45vw;
         }
 
         #message-field{
             width : 60%;
             padding: 10px;
-            margin : 10px;
             border: 3px solid black;
             border-radius: 20px;
             border-width: 3px;
@@ -48,26 +59,37 @@
         #send-button{
             color : white;
             border: none;
+            margin : 0 0 0 10px;
             border-radius: 20px;
             box-shadow: 0px 0px 2px 2px black;
             width: 70px;
             height: 40px;
             background-color: black;
         }
+
+        @media (max-width: 768px) {
+            .message-received{
+                width: 90vw;
+            }
+
+            .message-sent{
+                width: 90vw;
+            }
+        }
     </style>
     <title>Room</title>
 </head>
+
 <body>
-    <div id="container">
+    <div class="container">
         <div class="message-received">
-            <div class="msg">Hi <br> Hiii</div>
         </div>
-        <div id="message-sent">
+        <div class="message-sent">
             <input type="text" name="message" id="message-field" value="">
             <button id="send-button">Send</button>
         </div>
     </div>
-    
+
 
 
     <script>
@@ -76,12 +98,13 @@
 
         const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
         const msg_recived = document.getElementsByClassName("message-received")[0]
-        
+
 
         button = document.getElementById("send-button")
-        button.addEventListener("click", (event)=>{
+        button.addEventListener("click", (event) => {
             console.log("button clicked")
-            const msg_value = document.getElementById("message-field").value
+            msg_input_field = document.getElementById("message-field")
+            const msg_value = msg_input_field.value
             console.log(msg_value)
 
             const msg = {
@@ -89,25 +112,31 @@
                 "date": Date.now(),
             }
             myConn.send(JSON.stringify(msg))
+            msg_input_field.value = ''
             console.log("msg sent")
             console.log(msg)
         })
 
-        
 
-        myConn.addEventListener("message", (event)=>{
-            console.log("recived msg")
+
+        myConn.addEventListener("message", (event) => {
             const data = JSON.parse(event.data)
-            console.log(data["message"])
 
+            const elem_msg = document.createElement("div");
+            elem_msg.classList.add("msg"); // Add any relevant class for styling
+            elem_msg.innerHTML = `<div class='text-msg'> ${data["message"]['message_recived']} </div>`;
+
+            // elem_msg = document.getElementsByClassName('msg')[0]
             const userid_msg = data['message']['userid']
-            if (userid == userid_msg){
-                msg_recived.id = 'left-msg'
+            if (userid == userid_msg) {
+                elem_msg.id = 'left-msg'
             }
-            else msg_recived.id = 'right-msg'
-            msg_recived.innerHTML = `<div>${msg_recived.innerHTML} <p> ${data["message"]['message_recived']} </p></div>`
+            else elem_msg.id = 'right-msg'
+            // msg_recived.innerHTML = `<div>${msg_recived.innerHTML} ${elem_msg.innerHTML}</div>`
+            msg_recived.appendChild(elem_msg)
         })
 
     </script>
 </body>
+
 </html>
