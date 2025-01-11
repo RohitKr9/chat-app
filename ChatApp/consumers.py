@@ -32,7 +32,10 @@ class MyConsumer(AsyncWebsocketConsumer):
             self.group_name,
             {
                 "type" : "send_msg",
-                "message" : msg
+                "message" : {
+                    "message_recived" : msg,
+                    "userid" :self.scope['user'].id
+                }
             }
         )
         print("SENT")

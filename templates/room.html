@@ -3,14 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{
+            padding:0;
+            margin: 0;
+        }
+        #container{
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            
+        }
+        .message-received{
+            margin : 10px;
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 42rem;
+            height: 30rem;
+        }
+
+        .msg{
+            padding: 10px;
+        }
+        
+        #message-sent{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            padding: 30px;
+            width : 70%;
+        }
+
+        #message-field{
+            width : 60%;
+            padding: 10px;
+            margin : 10px;
+            border: 3px solid black;
+            border-radius: 20px;
+            border-width: 3px;
+        }
+
+        #send-button{
+            color : white;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0px 0px 2px 2px black;
+            width: 70px;
+            height: 40px;
+            background-color: black;
+        }
+    </style>
     <title>Room</title>
 </head>
 <body>
-    <div id="message-received"></div>
-    <div id="message-sent">
-        <input type="text" name="message" id="message-field" value="">
-        <button id="send-button">Send</button>
+    <div id="container">
+        <div class="message-received">
+            <div class="msg">Hi <br> Hiii</div>
+        </div>
+        <div id="message-sent">
+            <input type="text" name="message" id="message-field" value="">
+            <button id="send-button">Send</button>
+        </div>
     </div>
+    
 
 
     <script>
@@ -18,7 +75,7 @@
         const userid = currUrl.split('/').at(-2);
 
         const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
-        const msg_recived = document.getElementById("message-received")
+        const msg_recived = document.getElementsByClassName("message-received")[0]
         
 
         button = document.getElementById("send-button")
@@ -42,7 +99,13 @@
             console.log("recived msg")
             const data = JSON.parse(event.data)
             console.log(data["message"])
-            msg_recived.innerHTML = `<div>${msg_recived.innerHTML} <p> ${data["message"]}</p></div>`
+
+            const userid_msg = data['message']['userid']
+            if (userid == userid_msg){
+                msg_recived.id = 'left-msg'
+            }
+            else msg_recived.id = 'right-msg'
+            msg_recived.innerHTML = `<div>${msg_recived.innerHTML} <p> ${data["message"]['message_recived']} </p></div>`
         })
 
     </script>
