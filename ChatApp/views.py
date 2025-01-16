@@ -1,5 +1,9 @@
 from django.contrib.auth import get_user_model, get_user
 from django.shortcuts import render
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 User = get_user_model()
 
@@ -9,7 +13,7 @@ def chatApp(request):
 
 def chatAppRoom(request, userid):
 
-    return render(request, 'room.html')
+    return render(request, 'room.html', {"DOMAIN":env('DOMAIN')})
 
 def chatHome(request):
 

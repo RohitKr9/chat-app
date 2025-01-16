@@ -95,8 +95,11 @@
     <script>
         const currUrl = window.location.pathname;
         const userid = currUrl.split('/').at(-2);
+        let DOMAIN = "{{DOMAIN}}"
 
-        const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
+        // const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
+        const myConn = new WebSocket(`ws://${DOMAIN}/ws/room/${userid}/`)
+        console.log(DOMAIN)
         const msg_recived = document.getElementsByClassName("message-received")[0]
 
 

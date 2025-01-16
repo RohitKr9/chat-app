@@ -64,12 +64,13 @@
 <body>
     <div class="title_text"><h2>Login Here</h2></div>
     <div class="container">
-        <form action="http://127.0.0.1:8000/account/login/" method="post" id="loginform">
+        <form action={% url "login"%} method="post" id="loginform">
             {% csrf_token %}
             <label for="email">Email</label>
             <input type="email" name="email" id="email" placeholder="Email ID">
             <label for="password">Password</label>
             <input type="password" name="password" id="password">
+            <p>Not Registered <a href={%url 'signup'%}>Register</a></p>
             <button type="submit" form="loginform"><b>Submit</b></button>
         </form>
     </div>

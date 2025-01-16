@@ -81,7 +81,7 @@
     <div class="title_text"><h2>Register Here</h2></div>
     <div class="container">
         
-        <form action="http://127.0.0.1:8000/account/signup/" method="post" id="signupform">
+        <form action={% url "signup"%} method="post" id="signupform">
             {% csrf_token %}
             <label for="first_name">First Name</label>
             {{form.first_name}}
@@ -92,6 +92,7 @@
             {{form.email}}
             <label for="password">Password</label>
             {{form.password}}
+            <p> Already registered <a href={% url "login" %}>Login</a></p>
             {% comment %} <label for="password">Password</label>
             <input type="password" name="password" id="password"> {% endcomment %}
             <button type="submit" form="signupform"><b>Submit</b></button>
