@@ -98,7 +98,7 @@
         let DOMAIN = "{{DOMAIN}}"
 
         // const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
-        const myConn = new WebSocket(`ws://${DOMAIN}/ws/room/${userid}/`)
+        const myConn = new WebSocket(`wss://${DOMAIN}/ws/room/${userid}/`)
         console.log(DOMAIN)
         const msg_recived = document.getElementsByClassName("message-received")[0]
 
@@ -132,9 +132,9 @@
             // elem_msg = document.getElementsByClassName('msg')[0]
             const userid_msg = data['message']['userid']
             if (userid == userid_msg) {
-                elem_msg.id = 'left-msg'
+                elem_msg.id = 'right-msg'
             }
-            else elem_msg.id = 'right-msg'
+            else elem_msg.id = 'left-msg'
             // msg_recived.innerHTML = `<div>${msg_recived.innerHTML} ${elem_msg.innerHTML}</div>`
             msg_recived.appendChild(elem_msg)
         })
