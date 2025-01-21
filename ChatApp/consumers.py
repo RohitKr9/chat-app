@@ -13,6 +13,9 @@ class MyConsumer(AsyncWebsocketConsumer):
         self.user_id_1 = user.id
         self.user_id_2 = int(self.user_id_2)
 
+        print(f"USER 1 ID {self.user_id_1}")
+        print(f"USER 2 ID {self.user_id_2}")
+
         self.room_name = f"{min(self.user_id_1,self.user_id_2)}-{max(self.user_id_1, self.user_id_2)}"
 
         self.group_name = self.room_name
