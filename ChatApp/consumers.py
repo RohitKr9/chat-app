@@ -53,6 +53,7 @@ class MyConsumer(AsyncWebsocketConsumer):
 
         # Create room name
         self.room_name = f"{min(self.user_id_1, self.user_id_2)}-{max(self.user_id_1, self.user_id_2)}"
+        self.group_name = self.room_name
         print(f"Room Name: {self.room_name}")
 
         # Accept the WebSocket connection
