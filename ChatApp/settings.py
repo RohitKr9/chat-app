@@ -145,6 +145,7 @@ CHANNEL_LAYERS = {
 
 CSRF_TRUSTED_ORIGINS = [
     'https://chat-app-nl2l.onrender.com',  
+    'http://127.0.0.1:8000/',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'

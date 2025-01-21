@@ -12,6 +12,7 @@ def signup(request):
         form = SignUpForm(request.POST)
 
         if form.is_valid():
+            print("FORM VALIDATED")
             print(request.POST["email"])
             print(request.POST["first_name"])
             print(request.POST["last_name"])
@@ -20,6 +21,7 @@ def signup(request):
             return HttpResponseRedirect(reverse('chat_home'))
         
     else:
+            print("FORM NOT VALIDATED")
             form = SignUpForm()
 
     return render(request, "signup.html", {"form": form})
