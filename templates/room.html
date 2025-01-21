@@ -139,6 +139,16 @@
             msg_recived.appendChild(elem_msg)
         })
 
+        myConn.onclose = (event) => {
+            if (event.code === 4001) {
+                console.error("Connection closed: User not authenticated.");
+            } else if (event.code === 4002) {
+                console.error("Connection closed: Invalid or missing userid.");
+            } else {
+                console.error(`Connection closed: Code ${event.code}, Reason: ${event.reason}`);
+            }
+        };
+
     </script>
 </body>
 
