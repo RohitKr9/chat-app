@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model, get_user
 from django.shortcuts import render
 import environ
+import datetime
 
 env = environ.Env()
 environ.Env.read_env()
 
 User = get_user_model()
+users = User.objects.all()
 
 def chatApp(request):
 
@@ -13,11 +15,18 @@ def chatApp(request):
 
 def chatAppRoom(request, userid):
 
-    return render(request, 'room.html', {"DOMAIN":env('DOMAIN')})
+    requested_user = users.get(id=userid)
+    first_name = requested_user.first_name
+    last_name = requested_user.last_name
+    last_active = requested_user.last_login + datetime.timedelta(seconds=330*60)
+    return render(request, 'room.html', {"DOMAIN":env('DOMAIN'),
+                                         "first_name":first_name,
+                                         "last_name":last_name,
+                                         "last_active": last_active
+                                         })
 
 def chatHome(request):
 
-    users = User.objects.all()
     user = get_user(request)
     if user.is_authenticated:
         print(f"Authenticated WebSocket user: {user}")
