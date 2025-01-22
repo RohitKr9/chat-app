@@ -56,6 +56,10 @@ class MyConsumer(AsyncWebsocketConsumer):
         self.group_name = self.room_name
         print(f"Room Name: {self.room_name}")
 
+        await self.channel_layer.group_add(
+           self.group_name, self.channel_name
+        )
+
         # Accept the WebSocket connection
         await self.accept()
 
