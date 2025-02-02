@@ -33,3 +33,10 @@ class User(AbstractUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name','last_name']
+
+class Message(models.Model):
+
+    sender = models.ForeignKey('User', on_delete=models.CASCADE, related_name= "sender_message_set")
+    receiver = models.ForeignKey('User', on_delete=models.CASCADE, related_name= "receiver_message_set")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    message = models.CharField(max_length=10000)

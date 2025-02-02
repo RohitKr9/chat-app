@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', chatApp, name='app_landing'),
     path('chat-room/<int:userid>/', chatAppRoom, name='chatroom'),
-    path('account/signup/', signup, name = 'signup'),
-    path('account/login/', loginUser, name = 'login'),
+    path('accounts/signup/', signup, name = 'signup'),
+    path('accounts/login/', loginUser, name = 'login'),
     path('chat-home/', chatHome, name="chat_home")
 ]
