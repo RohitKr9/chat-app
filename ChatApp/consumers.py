@@ -3,7 +3,11 @@ from asgiref.sync import sync_to_async
 from accounts.models import Message
 import json
 from django.contrib.auth import get_user_model
+from django_redis import get_redis_connection
+from msgpack import packb, unpackb
+import datetime
 
+redis_client = get_redis_connection("default")
 User = get_user_model()
 
 class MyConsumer(AsyncWebsocketConsumer):
@@ -63,6 +67,7 @@ class MyConsumer(AsyncWebsocketConsumer):
             }
         )
         await sync_to_async(self.message_store)(msg)
+        print(f"sent for saving message")
     
 
     async def send_msg(self, event):
@@ -80,9 +85,33 @@ class MyConsumer(AsyncWebsocketConsumer):
         )
 
     def message_store(self,message):
+
+        sender = User.objects.get(id=self.user_id_1)
+        receiver =  User.objects.get(id=self.user_id_2)
+        print("------------------------------------")
+        print(sender)
+        print(receiver)
+        message_text = str(message)
         message = Message(
-            sender = User.objects.get(id=self.user_id_1),
-            receiver =  User.objects.get(id=self.user_id_2),
+            sender = sender,
+            receiver =  receiver,
             message = message
         )
         message.save()
+
+        #we will store to redis cache
+        list_name = self.room_name
+        cache_msg = packb(
+            {
+                "sender": sender.id,
+                "timestamp" : datetime.datetime.now().isoformat(),
+                "message": message_text
+            }
+        )
+        if (redis_client.llen(list_name) > 5):
+            redis_client.rpop(list_name)
+        redis_client.lpush(list_name, cache_msg) 
+        msgs = redis_client.lrange(list_name, 0, -1)
+        for m in msgs:
+            last_msg = unpackb(m)
+            print(last_msg)
