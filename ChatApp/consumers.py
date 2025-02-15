@@ -110,7 +110,7 @@ class MyConsumer(AsyncWebsocketConsumer):
                 "message": message
             }
         )
-        if (redis_client.llen(list_name) > 5):
+        if (redis_client.llen(list_name) > 10):
             redis_client.rpop(list_name)
         redis_client.lpush(list_name, cache_msg) 
         msgs = redis_client.lrange(list_name, 0, -1)

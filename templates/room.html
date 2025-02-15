@@ -5,22 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-         body {
+        body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
         }
-        h2{
+
+        h2 {
             margin: 10px 0 0 0;
         }
-        p{
-            margin:0;
+
+        p {
+            margin: 0;
         }
-        .container{
+
+        .container {
             display: flex;
             align-items: center;
-            
+
             flex-direction: column;
             margin: 10px auto 10px auto;
             /* width: 50vw;
@@ -29,24 +32,24 @@
             height: 96vh;
         }
 
-        .message-received{
+        .message-received {
             margin: 20px 10px 10px 10px;
-            padding : 10px;
+            padding: 10px;
             width: 45vw;
             height: 80vh;
             /* border: 3px solid black;
             border-radius: 20px; */
         }
 
-        #left-msg{
+        #left-msg {
             text-align: left;
         }
 
-        #right-msg{
+        #right-msg {
             text-align: right;
         }
-        
-        .message-sent{
+
+        .message-sent {
             position: sticky;
             display: flex;
             justify-content: center;
@@ -54,18 +57,18 @@
             width: 45vw;
         }
 
-        #message-field{
-            width : 60%;
+        #message-field {
+            width: 60%;
             padding: 10px;
             border: 3px solid black;
             border-radius: 20px;
             border-width: 3px;
         }
 
-        #send-button{
-            color : white;
+        #send-button {
+            color: white;
             border: none;
-            margin : 0 0 0 10px;
+            margin: 0 0 0 10px;
             border-radius: 20px;
             box-shadow: 0px 0px 2px 2px black;
             width: 70px;
@@ -73,16 +76,16 @@
             background-color: black;
         }
 
-        .text-msg{
+        .text-msg {
             margin: 10px 0;
         }
 
         @media (max-width: 768px) {
-            .message-received{
+            .message-received {
                 width: 90vw;
             }
 
-            .message-sent{
+            .message-sent {
                 width: 90vw;
             }
         }
@@ -94,9 +97,6 @@
     <div class="container">
         <h2>{{first_name}} {{last_name}}</h2>
         <p>Last Active: {{last_active}}</p>
-        {% for msg in messages%}
-            <li>{{msg}}</br></li>
-        {% endfor %} 
         <div class="message-received">
         </div>
         <div class="message-sent">
@@ -135,37 +135,64 @@
             console.log(msg)
         })
 
+        url = `http://127.0.0.1:8000/cached-messages/${userid}`
+        let old_message_list
+        console.log("STEP01")
+        async function get_data() {
+            let response = await fetch(url)
+            old_message_list = await response.json()
+            console.log("STEP02")
+            return old_message_list
+        }
+        async function waiting_fun() {
+            await get_data()
 
-
-        myConn.addEventListener("message", (event) => {
-            const data = JSON.parse(event.data)
-
-            const elem_msg = document.createElement("div");
-            elem_msg.classList.add("msg"); // Add any relevant class for styling
-            elem_msg.innerHTML = `<div class='text-msg'> 
-                 {% comment %} <div class = 'user_profile'>{{first_name}}</div> {% endcomment %}
-                 <p>${data["message"]['message_recived']}</p>
-                  </div>`;
-
-            // elem_msg = document.getElementsByClassName('msg')[0]
-            const userid_msg = data['message']['userid']
-            if (userid == userid_msg) {
-                elem_msg.id = 'left-msg'
+            function message_loader(message, userid_msg) {
+                const elem_msg = document.createElement("div");
+                elem_msg.classList.add("msg");
+                elem_msg.innerHTML = `<div class='text-msg'> 
+                {% comment %} <p>${data["message"]['message_recived']}</p> {% endcomment %}
+                <p>${message}</p>
+                </div>`;
+                // elem_msg = document.getElementsByClassName('msg')[0]
+                // const userid_msg = data['message']['userid']
+                if (userid == userid_msg) {
+                    elem_msg.id = 'left-msg'
+                }
+                else elem_msg.id = 'right-msg'
+                // msg_recived.innerHTML = `<div>${msg_recived.innerHTML} ${elem_msg.innerHTML}</div>`
+                msg_recived.appendChild(elem_msg)
             }
-            else elem_msg.id = 'right-msg'
-            // msg_recived.innerHTML = `<div>${msg_recived.innerHTML} ${elem_msg.innerHTML}</div>`
-            msg_recived.appendChild(elem_msg)
-        })
 
-        myConn.onclose = (event) => {
-            if (event.code === 4001) {
-                console.error("Connection closed: User not authenticated.");
-            } else if (event.code === 4002) {
-                console.error("Connection closed: Invalid or missing userid.");
-            } else {
-                console.error(`Connection closed: Code ${event.code}, Reason: ${event.reason}`);
+            for (let i = old_message_list.length-1; i >= 0 ; i--) {
+                let old_message = old_message_list[i]
+                let message = old_message["message"]
+                let userid = old_message["sender"]
+                message_loader(message, userid)
             }
-        };
+
+            myConn.addEventListener("message", (event) => {
+                const data = JSON.parse(event.data)
+                let message = data['message']['message_recived']
+                let userid = data['message']['userid']
+                message_loader(message, userid)
+            })
+
+            myConn.onclose = (event) => {
+                if (event.code === 4001) {
+                    console.error("Connection closed: User not authenticated.");
+                } else if (event.code === 4002) {
+                    console.error("Connection closed: Invalid or missing userid.");
+                } else {
+                    console.error(`Connection closed: Code ${event.code}, Reason: ${event.reason}`);
+                }
+            };
+
+
+        }
+        waiting_fun()
+        console.log("STEP04")
+
 
     </script>
 </body>
