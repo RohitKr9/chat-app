@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 import environ
 import datetime
-import json
+from django_redis import get_redis_connection
+from msgpack import unpackb
 
 
 env = environ.Env()
@@ -20,22 +21,35 @@ def chatApp(request):
 @login_required
 def chatAppRoom(request, userid):
 
-    #load all the message
-    #here you need to load the last 50 chats from db and loads the cache
+    user = get_user(request=request)
+    redis_client = get_redis_connection("default")
+    cache_list = f"{min(user.id, userid)}-{max(user.id, userid)}"
+    print(cache_list)
 
-    #get messages from cache
-    # msg_cache_raw = cache.get_client().zrange("messages", 0, -1)
-    # message_dict = [json.loads(msg.decode("utf-8")) for msg in msg_cache_raw]
+    msg_list_byte = redis_client.lrange(cache_list, 0, -1)
+    msgs_list = []
+    for msg in msg_list_byte:
+        msg_str = unpackb(msg)
+        print("this is testing of tyPPEEPEPE")
+        print(type(msgs_list))
+        msgs_list.append(msg_str)
+    
+    # msgs_json_string = f"[{msgs_json_string}]"
     
     requested_user = users.get(id=userid)
     first_name = requested_user.first_name
     last_name = requested_user.last_name
+    
+    user.last_login = datetime.datetime.now()
+    user.save()
+
     last_active = requested_user.last_login + datetime.timedelta(seconds=330*60)
+    
     return render(request, 'room.html', {"DOMAIN":env('DOMAIN'),
                                          "first_name":first_name,
                                          "last_name":last_name,
-                                         "last_active": last_active
-                                        #  "messages": json.dumps(message_dict)
+                                         "last_active": last_active,
+                                         "messages": reversed(msgs_list)
                                          })
 
 @login_required

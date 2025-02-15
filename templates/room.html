@@ -94,6 +94,9 @@
     <div class="container">
         <h2>{{first_name}} {{last_name}}</h2>
         <p>Last Active: {{last_active}}</p>
+        {% for msg in messages%}
+            <li>{{msg}}</br></li>
+        {% endfor %} 
         <div class="message-received">
         </div>
         <div class="message-sent">

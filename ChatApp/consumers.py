@@ -55,6 +55,7 @@ class MyConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_dict = json.loads(text_data)
         msg = text_data_dict["message"]
+        self.msg_user_id = self.scope['user'].id
 
         await self.channel_layer.group_send(
             self.group_name,
@@ -62,7 +63,7 @@ class MyConsumer(AsyncWebsocketConsumer):
                 "type" : "send_msg",
                 "message" : {
                     "message_recived" : msg,
-                    "userid" :self.scope['user'].id
+                    "userid" : self.msg_user_id
                 }
             }
         )
@@ -88,24 +89,25 @@ class MyConsumer(AsyncWebsocketConsumer):
 
         sender = User.objects.get(id=self.user_id_1)
         receiver =  User.objects.get(id=self.user_id_2)
-        print("------------------------------------")
         print(sender)
         print(receiver)
         message_text = str(message)
-        message = Message(
+        message_to_store = Message(
             sender = sender,
             receiver =  receiver,
             message = message
         )
-        message.save()
+        message_to_store.save()
+        self.cache_store(message)
 
         #we will store to redis cache
+    def cache_store(self, message):
         list_name = self.room_name
         cache_msg = packb(
             {
-                "sender": sender.id,
+                "sender": self.msg_user_id,
                 "timestamp" : datetime.datetime.now().isoformat(),
-                "message": message_text
+                "message": message
             }
         )
         if (redis_client.llen(list_name) > 5):
@@ -114,4 +116,4 @@ class MyConsumer(AsyncWebsocketConsumer):
         msgs = redis_client.lrange(list_name, 0, -1)
         for m in msgs:
             last_msg = unpackb(m)
-            print(last_msg)
+            print(last_msg)   
