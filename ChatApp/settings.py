@@ -21,9 +21,9 @@ env = environ.Env(
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#environ.Env.read_env()
-if os.path.exists(os.path.join(BASE_DIR, ".env")):
-    environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+environ.Env.read_env()
+# if os.path.exists(os.path.join(BASE_DIR, ".env")):
+#     environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 
 # Quick-start development settings - unsuitable for production
@@ -163,7 +163,7 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        #"LOCATION": "redis://127.0.0.1:6379/1",  # Redis URL
+        # "LOCATION": "redis://127.0.0.1:6379/1",  # Redis URL
         "LOCATION" : env('REDIS_URL'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",

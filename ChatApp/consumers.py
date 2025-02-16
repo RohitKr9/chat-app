@@ -1,6 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-from accounts.models import Message
+
 import json
 from django.contrib.auth import get_user_model
 from django_redis import get_redis_connection
@@ -9,7 +9,6 @@ import datetime
 
 redis_client = get_redis_connection("default")
 User = get_user_model()
-
 class MyConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
@@ -86,6 +85,7 @@ class MyConsumer(AsyncWebsocketConsumer):
         )
 
     def message_store(self,message):
+        from accounts.models import Message
 
         sender = User.objects.get(id=self.user_id_1)
         receiver =  User.objects.get(id=self.user_id_2)
