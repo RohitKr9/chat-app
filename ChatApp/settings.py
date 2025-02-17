@@ -143,7 +143,9 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env('REDIS_URL', default="redis://127.0.0.1:6379"))],
+            #"hosts" : ["redis://127.0.0.1:6379",]
+            "hosts": [env('REDIS_URL')],
+            #"hosts": [(env('REDIS_URL', default="redis://127.0.0.1:6379"))],
         },
     },
 }
@@ -163,7 +165,7 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        # "LOCATION": "redis://127.0.0.1:6379/1",  # Redis URL
+        #"LOCATION": "redis://127.0.0.1:6379/1",  # Redis URL
         "LOCATION" : env('REDIS_URL'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
