@@ -135,7 +135,7 @@
             console.log(msg)
         })
 
-        url = `http://127.0.0.1:8000/cached-messages/${userid}`
+        url = `${DOMAIN}/cached-messages/${userid}`
         let old_message_list
         console.log("STEP01")
         async function get_data() {
