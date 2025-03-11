@@ -62,10 +62,16 @@
     <title>Document</title>
 </head>
 <body>
+    <script>
+        const sessionid = "{{session_id}}";
+        sessionStorage.setItem('X-Session-Id', sessionid);
+        console.log("Session ID stored:", sessionid);
+    </script>
     <div class="title_text"><h2>Login Here</h2></div>
     <div class="container">
         <form action={% url "login"%} method="post" id="loginform">
             {% csrf_token %}
+            <input type="hidden" id="X-Session-Id" name="X-Session-Id" value="">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" placeholder="Email ID">
             <label for="password">Password</label>

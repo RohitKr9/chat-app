@@ -6,10 +6,16 @@
     <title>Home</title>
 </head>
 <body>
+    <script>
+        const sessionid = "{{session_id}}"
+        sessionStorage.setItem('X_Session_Id', sessionid)
+        console.log("Session ID stored:", sessionid);
+    </script>
     {% for user in users %}
     <a href={% url "chatroom" user.id%}>
         <div id={{user.id}}> {{user.first_name}} {{user.last_name}} </div>
     </a>
     {%endfor%}
 </body>
+
 </html>

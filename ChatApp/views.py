@@ -17,7 +17,7 @@ users = User.objects.all()
 
 def chatApp(request):
 
-    return render(request, 'index.html')
+    return render(request, 'index.html', {"session_id":request.session.session_key})
 
 @login_required
 def chatAppRoom(request, userid):
@@ -44,11 +44,10 @@ def chatHome(request):
 
     user = get_user(request)
     other_users = users.exclude(id = user.id)
-    return render(request, 'chat-home.html', {"users":other_users})
+    return render(request, 'chat-home.html', {"users":other_users, "session_id":request.session.session_key})
 
 @login_required
 def get_cached_messages(request, userid):
-
     user = get_user(request)
 
     redis_client = get_redis_connection("default")

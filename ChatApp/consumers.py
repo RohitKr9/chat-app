@@ -35,13 +35,13 @@ class MyConsumer(AsyncWebsocketConsumer):
             await self.close(code=4002)
             return
 
-        print(f"USER 1 ID: {self.user_id_1}")
-        print(f"USER 2 ID: {self.user_id_2}")
+        # print(f"USER 1 ID: {self.user_id_1}")
+        # print(f"USER 2 ID: {self.user_id_2}")
 
         # Create room name
         self.room_name = f"{min(self.user_id_1, self.user_id_2)}-{max(self.user_id_1, self.user_id_2)}"
         self.group_name = self.room_name
-        print(f"Room Name: {self.room_name}")
+        # print(f"Room Name: {self.room_name}")
 
         await self.channel_layer.group_add(
            self.group_name, self.channel_name
@@ -49,6 +49,7 @@ class MyConsumer(AsyncWebsocketConsumer):
 
         # Accept the WebSocket connection
         await self.accept()
+
 
 
     async def receive(self, text_data):
@@ -67,13 +68,13 @@ class MyConsumer(AsyncWebsocketConsumer):
             }
         )
         await sync_to_async(self.message_store)(msg)
-        print(f"sent for saving message")
+        # print(f"sent for saving message")
     
 
     async def send_msg(self, event):
         msg = event["message"]
 
-        print(f"sending msg {msg}")
+        # print(f"sending msg {msg}")
 
         await self.send(text_data=json.dumps({
             "message": msg
@@ -116,4 +117,4 @@ class MyConsumer(AsyncWebsocketConsumer):
         msgs = redis_client.lrange(list_name, 0, -1)
         for m in msgs:
             last_msg = unpackb(m)
-            print(last_msg)   
+            # print(last_msg)   

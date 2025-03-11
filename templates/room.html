@@ -26,10 +26,7 @@
 
             flex-direction: column;
             margin: 10px auto 10px auto;
-            /* width: 50vw;
-            border: 3px solid black;
-            border-radius: 20px; */
-            height: 96vh;
+            /* height: 96vh; */
         }
 
         .message-received {
@@ -112,36 +109,43 @@
         const userid = currUrl.split('/').at(-2);
         let DOMAIN = "{{DOMAIN}}"
 
-        //const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
-        const myConn = new WebSocket(`wss://${DOMAIN}/ws/room/${userid}/`)
+        const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
+        //const myConn = new WebSocket(`wss://${DOMAIN}/ws/room/${userid}/`)
         console.log(DOMAIN)
         const msg_recived = document.getElementsByClassName("message-received")[0]
 
 
         button = document.getElementById("send-button")
-        button.addEventListener("click", (event) => {
-            console.log("button clicked")
-            msg_input_field = document.getElementById("message-field")
-            const msg_value = msg_input_field.value
-            console.log(msg_value)
+        button.addEventListener("click", onSend)
+        document.addEventListener("keydown", onSend)
 
-            const msg = {
-                "message": msg_value,
-                "date": Date.now(),
+        function onSend(event) {
+            if (event.type == "click" || event.key == "Enter") {
+                // console.log("button clicked")
+                msg_input_field = document.getElementById("message-field")
+                const msg_value = msg_input_field.value
+                // console.log(msg_value)
+
+                const msg = {
+                    "message": msg_value,
+                    "date": Date.now(),
+                }
+                myConn.send(JSON.stringify(msg))
+                msg_input_field.value = ''
+                // console.log("msg sent")
+                // console.log(msg)
             }
-            myConn.send(JSON.stringify(msg))
-            msg_input_field.value = ''
-            console.log("msg sent")
-            console.log(msg)
-        })
 
-        const url = `https://chat-app-nl2l.onrender.com/cached-messages/${userid}`
+        }
+
+        //const url = `https://chat-app-nl2l.onrender.com/cached-messages/${userid}`
+        const url = `http://127.0.0.1:8000/cached-messages/${userid}`
         let old_message_list
-        console.log("STEP01")
+        // console.log("STEP01")
         async function get_data() {
             let response = await fetch(url)
             old_message_list = await response.json()
-            console.log("STEP02")
+            // console.log("STEP02")
             return old_message_list
         }
         async function waiting_fun() {
@@ -164,7 +168,7 @@
                 msg_recived.appendChild(elem_msg)
             }
 
-            for (let i = old_message_list.length-1; i >= 0 ; i--) {
+            for (let i = old_message_list.length - 1; i >= 0; i--) {
                 let old_message = old_message_list[i]
                 let message = old_message["message"]
                 let userid = old_message["sender"]
@@ -191,7 +195,7 @@
 
         }
         waiting_fun()
-        console.log("STEP04")
+        // console.log("STEP04")
 
 
     </script>

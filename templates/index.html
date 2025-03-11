@@ -6,8 +6,35 @@
     <title>chat-app</title>
 </head>
 <body>
+    <script>
+        const sessionid = "{{session_id}}";
+        sessionStorage.setItem('X-Session-Id', sessionid);
+        console.log("Session ID stored:", sessionid);
+
+        async function linkTrigger(url){
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-Session-Id': sessionid
+                    }
+                });
+                if (response.ok) {
+                    //window.location.href = url;
+                    const html = await response.text();  
+                    document.write(html); 
+                    document.close();
+                } else {
+                    console.log(response.status);
+                }
+            } catch(error) {
+                console.error(error);
+            }
+        }
+    </script>
     <div><h1>Hi <br> Welcome to the chat app</h1></div>
-    <a href="./accounts/login/">login</a>
-    <a href="./accounts/signup/">signup</a>
+    <a href="javascript:void(0);" onclick="linkTrigger('./accounts/login/');">login</a>
+    <a href="javascript:void(0);" onclick="linkTrigger('./accounts/signup/');">signup</a>
 </body>
+
 </html>

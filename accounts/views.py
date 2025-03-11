@@ -41,4 +41,4 @@ def loginUser(request):
             print(f"User in not None inside loginuser view: {user}, is_authenticated: {user.is_authenticated}")
             return HttpResponseRedirect(reverse('chat_home'))
 
-    return render(request, "login.html")
+    return render(request, "login.html", {"session_id":request.session.session_key})
