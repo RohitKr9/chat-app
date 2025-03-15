@@ -271,7 +271,7 @@
         const userid = currUrl.split('/').at(-2);
         let DOMAIN = "{{DOMAIN}}"
 
-        const myConn = new WebSocket(`${DOMAIN}/ws/room/${userid}/`)
+        const myConn = new WebSocket(`wss://chat-app-nl2l.onrender.com/ws/room/${userid}/`)
         console.log(DOMAIN)
         const msg_recived = document.getElementsByClassName("message-received")[0]
 
@@ -292,7 +292,7 @@
             }
         }
 
-        const url = `${DOMAIN}/cached-messages/${userid}`
+        const url = `https://chat-app-nl2l.onrender.com/cached-messages/${userid}`
         let old_message_list
 
         async function get_data() {
