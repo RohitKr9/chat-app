@@ -1,79 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body{
-            padding:0%;
-            margin:0%;
-            font-family: 'Courier New', monospace;
-            box-sizing: border-box;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .container{
-            padding: 20px;
-            border: 2px solid black;
-            border-radius: 20px;
-            width: 40%;
-            box-shadow: 0px 0px 2px 2px black;
-        }
-        form{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 30vh;
-            padding-bottom: 30px;
-        }
-        input[type="email"],
-        input[type="password"]{
-            margin: 10px 20px 10px 20px;
-            border: 3px solid black;
-            border-radius: 20px;
-            width: 70%;
-            padding: 5px 10px;
-            box-shadow: 0px 0px 2px 2px black;
-        }
-        label{
-            margin: 0 330px 0 0;  
-        }
-        label[for="email"]{
-            margin-right: 350px; 
-        }
-        button{
-            color : white;
-            border: none;
-            margin : 0 0 0 10px;
-            border-radius: 20px;
-            box-shadow: 0px 0px 2px 2px black;
-            width: 50%;
-            height: 30px;
-            background-color: black;
-        }
-        .title_text{
-            padding-bottom: 20px;
-        }
-    </style>
-    <title>Document</title>
-</head>
-<body>
-    <div class="title_text"><h2>Login Here</h2></div>
-    <div class="container">
-        <form action={% url "login"%} method="post" id="loginform">
-            {% csrf_token %}
-            <input type="hidden" id="X-Session-Id" name="X-Session-Id" value="">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Email ID">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password">
-            <p>Not Registered <a href={%url 'signup'%}>Register</a></p>
-            <button type="submit" form="loginform"><b>Submit</b></button>
-        </form>
-    </div>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            body {
+                font-family: 'Courier New', monospace;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                background: #fff;
+            }
+    
+            .container {
+                padding: 20px;
+                border: 2px solid black;
+                border-radius: 20px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0px 0px 2px 2px black;
+                margin: 0 10px;
+            }
+    
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 20px 0;
+            }
+    
+            input[type="email"],
+            input[type="password"] {
+                margin: 10px 0;
+                border: 3px solid black;
+                border-radius: 20px;
+                width: 80%;
+                max-width: 300px;
+                padding: 5px 10px;
+                box-shadow: 0px 0px 2px 2px black;
+            }
+    
+            label {
+                margin: 5px 0;
+                width: 80%;
+                max-width: 300px;
+                text-align: left;
+            }
+    
+            button {
+                color: white;
+                border: none;
+                border-radius: 20px;
+                box-shadow: 0px 0px 2px 2px black;
+                width: 50%;
+                max-width: 200px;
+                height: 30px;
+                background-color: black;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+    
+            .title_text {
+                padding-bottom: 20px;
+                text-align: center;
+            }
+    
+            a {
+                color: black;
+                text-decoration: none;
+            }
+    
+            a:hover {
+                text-decoration: underline;
+            }
+    
+            @media (max-width: 480px) {
+                .container {
+                    padding: 15px;
+                    margin: 0 5px;
+                }
+    
+                form {
+                    padding: 15px 0;
+                }
+    
+                input[type="email"],
+                input[type="password"] {
+                    width: 90%;
+                    padding: 4px 8px;
+                }
+    
+                label {
+                    width: 90%;
+                    font-size: 0.9rem;
+                }
+    
+                button {
+                    width: 60%;
+                    height: 28px;
+                }
+    
+                .title_text {
+                    padding-bottom: 15px;
+                }
+    
+                .title_text h2 {
+                    font-size: 1.2rem;
+                }
+            }
+        </style>
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="title_text"><h2>Login Here</h2></div>
+        <div class="container">
+            <form action="{% url 'login' %}" method="post" id="loginform">
+                {% csrf_token %}
+                <input type="hidden" id="X-Session-Id" name="X-Session-Id" value="">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Email ID">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password">
+                <p>Not Registered? <a href="{% url 'signup' %}">Register</a></p>
+                <button type="submit" form="loginform"><b>Submit</b></button>
+            </form>
+        </div>
+    </body>
+
 </html>

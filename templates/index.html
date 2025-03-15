@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chat-app</title>
-</head>
-<body>
+
+<!-- <body>
     <script>
         const sessionid = "{{session_id}}";
         sessionStorage.setItem('X-Session-Id', sessionid);
@@ -35,6 +31,161 @@
     <div><h1>Hi <br> Welcome to the chat app</h1></div>
     <a href="javascript:void(0);" onclick="linkTrigger('./accounts/login/');">login</a>
     <a href="javascript:void(0);" onclick="linkTrigger('./accounts/signup/');">signup</a>
+</body> -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatSphere - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #000;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ccc;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ccc;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        @media (max-width: 480px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+            }
+
+            .nav-links a {
+                margin: 0 0.75rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .footer-links a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">ChatSphere</div>
+        <nav class="nav-links">
+            <a href="accounts/login">Login</a>
+            <a href="accounts/signup">Sign Up</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Welcome to ChatSphere</h1>
+            <p>Connect with friends and family instantly with our simple and secure chat platform.</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/yourprofile" target="_blank">Twitter</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 ChatSphere. All rights reserved.
+        </div>
+    </footer>
 </body>
 
 </html>

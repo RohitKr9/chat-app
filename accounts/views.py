@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import SignUpForm
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth import get_user
 
@@ -42,3 +42,8 @@ def loginUser(request):
             return HttpResponseRedirect(reverse('chat_home'))
 
     return render(request, "login.html", {"session_id":request.session.session_key})
+
+def logoutUser(request):
+     
+     logout(request)
+     return HttpResponseRedirect(reverse('app_landing'))

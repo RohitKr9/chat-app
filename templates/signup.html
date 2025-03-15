@@ -8,26 +8,26 @@
     <style>
         * {
             box-sizing: border-box;
-            padding: 0%;
-            margin: 0%;
+            padding: 0;
+            margin: 0;
         }
 
         body {
             font-family: 'Courier New', monospace;
-            box-sizing: border-box;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            background: #fff;
         }
 
         .container {
             padding: 20px;
             border: 2px solid black;
             border-radius: 20px;
-            width: 40vw;
-            height: 55vh;
+            width: 90%;
+            max-width: 500px;
             box-shadow: 0px 0px 2px 2px black;
             display: flex;
             justify-content: center;
@@ -39,40 +39,90 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
-            padding: 30px;
+            width: 100%;
+            padding: 20px;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            margin: 10px 20px 10px 20px;
+            margin: 10px 0;
             border: 3px solid black;
             border-radius: 20px;
-            width: 100%;
+            width: 80%;
+            max-width: 300px;
             padding: 5px 10px;
             box-shadow: 0px 0px 2px 2px black;
         }
 
         label {
-            margin: 0 10px 0 0;
+            margin: 5px 0;
+            width: 80%;
+            max-width: 300px;
+            text-align: left;
         }
 
-        /* label[for="email"]{
-        margin-right: 350px; 
-    } */
         button {
             color: white;
             border: none;
-            margin: 0 0 0 10px;
             border-radius: 20px;
             box-shadow: 0px 0px 2px 2px black;
             width: 50%;
-            height: 100px;
+            max-width: 200px;
+            height: 30px;
             background-color: black;
+            cursor: pointer;
+            margin-top: 10px;
         }
-        .title_text{
+
+        .title_text {
             padding-bottom: 20px;
+            text-align: center;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 0 5px;
+            }
+
+            form {
+                padding: 15px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"] {
+                width: 90%;
+                padding: 4px 8px;
+            }
+
+            label {
+                width: 90%;
+                font-size: 0.9rem;
+            }
+
+            button {
+                width: 60%;
+                height: 28px;
+            }
+
+            .title_text {
+                padding-bottom: 15px;
+            }
+
+            .title_text h2 {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -80,21 +130,17 @@
 <body>
     <div class="title_text"><h2>Register Here</h2></div>
     <div class="container">
-        
-        <form action={% url "signup"%} method="post" id="signupform">
+        <form action="{% url 'signup' %}" method="post" id="signupform">
             {% csrf_token %}
             <label for="first_name">First Name</label>
             {{form.first_name}}
-            {% comment %} <input type="email" name="email" id="email" placeholder="Email ID"> {% endcomment %}
             <label for="last_name">Last Name</label>
             {{form.last_name}}
             <label for="email">Email</label>
             {{form.email}}
             <label for="password">Password</label>
             {{form.password}}
-            <p> Already registered <a href={% url "login" %}>Login</a></p>
-            {% comment %} <label for="password">Password</label>
-            <input type="password" name="password" id="password"> {% endcomment %}
+            <p>Already registered? <a href="{% url 'login' %}">Login</a></p>
             <button type="submit" form="signupform"><b>Submit</b></button>
         </form>
     </div>

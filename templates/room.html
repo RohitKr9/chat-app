@@ -5,61 +5,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #fff;
+            border-bottom: 3px solid black;
+            box-shadow: 0px 0px 2px 2px black;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        .logout-btn {
+            color: white;
+            background-color: black;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0px 0px 2px 2px black;
+            padding: 8px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #333;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 800px;
+            height: calc(100vh - 68px);
+            margin: 0 auto;
+            flex-grow: 1;
+        }
+
+        .user-info {
+            padding: 10px;
+            text-align: center;
+            background-color: #f5f5f5;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
 
         h2 {
-            margin: 10px 0 0 0;
+            margin: 0;
         }
 
         p {
             margin: 0;
         }
 
-        .container {
+        .message-received {
+            flex-grow: 1;
+            margin: 10px;
+            padding: 10px;
+            overflow-y: auto;
+            width: calc(100% - 20px);
             display: flex;
-            align-items: center;
-
-            flex-direction: column;
-            margin: 10px auto 10px auto;
-            /* height: 96vh; */
+            flex-direction: column-reverse;
         }
 
-        .message-received {
-            margin: 20px 10px 10px 10px;
-            padding: 10px;
-            width: 45vw;
-            height: 80vh;
-            /* border: 3px solid black;
-            border-radius: 20px; */
+        .msg {
+            display: flex;
+            width: 100%;
         }
 
         #left-msg {
-            text-align: left;
+            justify-content: flex-start; /* Align to left */
         }
 
         #right-msg {
-            text-align: right;
+            justify-content: flex-end; /* Align to right */
+        }
+
+        .text-msg {
+            margin: 5px 0;
+            max-width: 70%;
+            padding: 8px 12px;
+            border-radius: 15px;
+            line-height: 1.4;
+        }
+
+        #left-msg .text-msg {
+            background-color: #e0e0e0; /* Light gray for received messages */
+            border: 1px solid #ccc;
+        }
+
+        #right-msg .text-msg {
+            background-color: #000; /* Black for sent messages */
+            color: white;
+            border: 1px solid #000;
         }
 
         .message-sent {
-            position: sticky;
             display: flex;
             justify-content: center;
-            margin: 20px;
-            width: 45vw;
+            padding: 10px;
+            background-color: #f5f5f5;
+            position: sticky;
+            bottom: 0;
+            z-index: 1;
         }
 
         #message-field {
-            width: 60%;
+            width: 70%;
+            max-width: 400px;
             padding: 10px;
             border: 3px solid black;
             border-radius: 20px;
-            border-width: 3px;
         }
 
         #send-button {
@@ -71,19 +151,94 @@
             width: 70px;
             height: 40px;
             background-color: black;
-        }
-
-        .text-msg {
-            margin: 10px 0;
+            cursor: pointer;
         }
 
         @media (max-width: 768px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .logout-btn {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+
+            .main-container {
+                height: calc(100vh - 58px);
+            }
+
+            .user-info {
+                padding: 5px;
+            }
+
             .message-received {
-                width: 90vw;
+                margin: 5px;
+                padding: 5px;
             }
 
             .message-sent {
-                width: 90vw;
+                padding: 5px;
+            }
+
+            #message-field {
+                width: 65%;
+                padding: 8px;
+            }
+
+            #send-button {
+                width: 60px;
+                height: 35px;
+                margin-left: 5px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .text-msg {
+                padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 8px 10px;
+            }
+
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .logout-btn {
+                padding: 5px 12px;
+                font-size: 0.8rem;
+            }
+
+            .main-container {
+                height: calc(100vh - 50px);
+            }
+
+            #message-field {
+                width: 60%;
+                padding: 6px;
+            }
+
+            #send-button {
+                width: 50px;
+                height: 30px;
+            }
+
+            .text-msg {
+                padding: 5px 8px;
             }
         }
     </style>
@@ -91,9 +246,18 @@
 </head>
 
 <body>
-    <div class="container">
-        <h2>{{first_name}} {{last_name}}</h2>
-        <p>Last Active: {{last_active}}</p>
+    <div class="header">
+        <h1>ChatSphere</h1>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+    <div class="main-container">
+        <div class="user-info">
+            <h2>{{first_name}} {{last_name}}</h2>
+            <p>Last Active: {{last_active}}</p>
+        </div>
         <div class="message-received">
         </div>
         <div class="message-sent">
@@ -102,18 +266,14 @@
         </div>
     </div>
 
-
-
     <script>
         const currUrl = window.location.pathname;
         const userid = currUrl.split('/').at(-2);
         let DOMAIN = "{{DOMAIN}}"
 
-        const myConn = new WebSocket(`ws://127.0.0.1:8000/ws/room/${userid}/`)
-        //const myConn = new WebSocket(`wss://${DOMAIN}/ws/room/${userid}/`)
+        const myConn = new WebSocket(`${DOMAIN}/ws/room/${userid}/`)
         console.log(DOMAIN)
         const msg_recived = document.getElementsByClassName("message-received")[0]
-
 
         button = document.getElementById("send-button")
         button.addEventListener("click", onSend)
@@ -121,33 +281,26 @@
 
         function onSend(event) {
             if (event.type == "click" || event.key == "Enter") {
-                // console.log("button clicked")
                 msg_input_field = document.getElementById("message-field")
                 const msg_value = msg_input_field.value
-                // console.log(msg_value)
-
                 const msg = {
                     "message": msg_value,
                     "date": Date.now(),
                 }
                 myConn.send(JSON.stringify(msg))
                 msg_input_field.value = ''
-                // console.log("msg sent")
-                // console.log(msg)
             }
-
         }
 
-        //const url = `https://chat-app-nl2l.onrender.com/cached-messages/${userid}`
-        const url = `http://127.0.0.1:8000/cached-messages/${userid}`
+        const url = `${DOMAIN}/cached-messages/${userid}`
         let old_message_list
-        // console.log("STEP01")
+
         async function get_data() {
             let response = await fetch(url)
             old_message_list = await response.json()
-            // console.log("STEP02")
             return old_message_list
         }
+
         async function waiting_fun() {
             await get_data()
 
@@ -155,17 +308,15 @@
                 const elem_msg = document.createElement("div");
                 elem_msg.classList.add("msg");
                 elem_msg.innerHTML = `<div class='text-msg'> 
-                {% comment %} <p>${data["message"]['message_recived']}</p> {% endcomment %}
-                <p>${message}</p>
+                    <p>${message}</p>
                 </div>`;
-                // elem_msg = document.getElementsByClassName('msg')[0]
-                // const userid_msg = data['message']['userid']
                 if (userid == userid_msg) {
                     elem_msg.id = 'left-msg'
+                } else {
+                    elem_msg.id = 'right-msg'
                 }
-                else elem_msg.id = 'right-msg'
-                // msg_recived.innerHTML = `<div>${msg_recived.innerHTML} ${elem_msg.innerHTML}</div>`
-                msg_recived.appendChild(elem_msg)
+                msg_recived.insertBefore(elem_msg, msg_recived.firstChild);
+                msg_recived.scrollTop = msg_recived.scrollHeight;
             }
 
             for (let i = old_message_list.length - 1; i >= 0; i--) {
@@ -191,13 +342,8 @@
                     console.error(`Connection closed: Code ${event.code}, Reason: ${event.reason}`);
                 }
             };
-
-
         }
         waiting_fun()
-        // console.log("STEP04")
-
-
     </script>
 </body>
 

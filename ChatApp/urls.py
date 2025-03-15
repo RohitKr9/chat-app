@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import chatApp, chatAppRoom, chatHome, get_cached_messages
-from accounts.views import signup, loginUser
+from accounts.views import signup, loginUser, logoutUser
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +25,7 @@ urlpatterns = [
     path('chat-room/<int:userid>/', chatAppRoom, name='chatroom'),
     path('accounts/signup/', signup, name = 'signup'),
     path('accounts/login/', loginUser, name = 'login'),
+    path('accounts/logout/', logoutUser, name = 'logout'),
     path('chat-home/', chatHome, name="chat_home"),
     path('cached-messages/<int:userid>/', get_cached_messages),
 ]
