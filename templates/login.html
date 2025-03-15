@@ -62,11 +62,6 @@
     <title>Document</title>
 </head>
 <body>
-    <script>
-        const sessionid = "{{session_id}}";
-        sessionStorage.setItem('X-Session-Id', sessionid);
-        console.log("Session ID stored:", sessionid);
-    </script>
     <div class="title_text"><h2>Login Here</h2></div>
     <div class="container">
         <form action={% url "login"%} method="post" id="loginform">
